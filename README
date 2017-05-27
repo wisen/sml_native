@@ -1,0 +1,19 @@
+please follow bellow steps to porting this features:
+
+1. setup your android build env
+   ext: source rlk_setenv.sh x559_h8015_a1b1 eng;
+
+2. run the script porting.sh
+
+3. append bellow to your device.mk
+	 PRODUCT_PACKAGES += atrace_monitor
+	 PRODUCT_COPY_FILES += vendor/reallytek/atrace_monitor/prebuild/init.atrace_monitor.rc:root/init.atrace_monitor.rc
+	 PRODUCT_COPY_FILES += vendor/reallytek/atrace_monitor/prebuild/tr_systrace_postfix:/system/vendor/etc/tr_systrace_postfix
+	 PRODUCT_COPY_FILES += vendor/reallytek/atrace_monitor/prebuild/tr_systrace_prefix:/system/vendor/etc/tr_systrace_prefix
+	 PRODUCT_COPY_FILES += vendor/reallytek/atrace_monitor/prebuild/SystraceEnabler.conf:/system/vendor/etc/SystraceEnabler.conf
+
+4. build your hole android and verify the features
+
+
+Notice:
+   Please notice that on diff platforms, the input event sources maybe diff, please confirm the right input event source.

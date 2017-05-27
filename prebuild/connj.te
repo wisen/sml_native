@@ -1,0 +1,29 @@
+type connj, domain;
+type connj_exec, exec_type, file_type;
+
+init_daemon_domain(connj)
+
+allow connj debugfs_tracing:file { open write read };
+allow connj debug_prop:property_service { set };
+allow connj property_socket:sock_file { write };
+allow connj input_device:dir { search };
+allow connj init:unix_stream_socket{ connectto };
+allow connj input_device:chr_file{ open read write ioctl };
+allow connj self:capability { dac_override dac_read_search };
+allow connj trlog_data_file:dir { getattr add_name create open read write ioctl create_dir_perms };
+allow connj trlog_data_file:file { open read create_file_perms };
+allow connj storage_file:lnk_file { open read create_file_perms };
+allow connj tmpfs:dir { search };
+allow connj sdcardfs:dir { search write add_name create };
+allow connj sdcardfs:file{ create write open };
+allow connj media_rw_data_file:dir { read open search };
+allow connj media_rw_data_file:file { write open };
+allow connj mnt_user_file:dir { read search };
+allow connj mnt_user_file:file { read };
+allow connj mnt_user_file:lnk_file { read };
+allow connj shell_exec:file { open read execute execute_no_trans getattr };
+allow connj system_file:file { execute_no_trans };
+allow connj ctl_dumpstate_prop:property_service{ set };
+allow connj dumpstate_socket:sock_file { write };
+allow connj dumpstate:unix_stream_socket { connectto };
+allow connj debugfs_wakeup_sources:file { read };

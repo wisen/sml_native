@@ -1,0 +1,29 @@
+type atrace_monitor, domain;
+type atrace_monitor_exec, exec_type, file_type;
+
+init_daemon_domain(atrace_monitor)
+
+allow atrace_monitor debugfs_tracing:file { open write read };
+allow atrace_monitor debug_prop:property_service { set };
+allow atrace_monitor property_socket:sock_file { write };
+allow atrace_monitor input_device:dir { search };
+allow atrace_monitor init:unix_stream_socket{ connectto };
+allow atrace_monitor input_device:chr_file{ open read write ioctl };
+allow atrace_monitor self:capability { dac_override dac_read_search };
+allow atrace_monitor trlog_data_file:dir { getattr add_name create open read write ioctl create_dir_perms };
+allow atrace_monitor trlog_data_file:file { open read create_file_perms };
+allow atrace_monitor storage_file:lnk_file { open read create_file_perms };
+allow atrace_monitor tmpfs:dir { search };
+allow atrace_monitor sdcardfs:dir { search write add_name create };
+allow atrace_monitor sdcardfs:file{ create write open };
+allow atrace_monitor media_rw_data_file:dir { read open search };
+allow atrace_monitor media_rw_data_file:file { write open };
+allow atrace_monitor mnt_user_file:dir { read search };
+allow atrace_monitor mnt_user_file:file { read };
+allow atrace_monitor mnt_user_file:lnk_file { read };
+allow atrace_monitor shell_exec:file { open read execute execute_no_trans getattr };
+allow atrace_monitor system_file:file { execute_no_trans };
+allow atrace_monitor ctl_dumpstate_prop:property_service{ set };
+allow atrace_monitor dumpstate_socket:sock_file { write };
+allow atrace_monitor dumpstate:unix_stream_socket { connectto };
+allow atrace_monitor debugfs_wakeup_sources:file { read };
