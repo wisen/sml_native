@@ -17,6 +17,7 @@
 #include "headers/conn.h"
 #include "headers/atrace_impl.h"
 #include "headers/bugreport_impl.h"
+#include "headers/logcat_impl.h"
 
 #define APP_DIR  "/system/"
 #define BIN_DIR  APP_DIR "bin/"
@@ -274,6 +275,7 @@ void *thr_connJ(void *arg){
 int main()
 {
 	init_atrace();
+	init_logcat();
 
 	pthread_t ntid;
 	int err;

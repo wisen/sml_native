@@ -1,7 +1,7 @@
 LOCAL_PATH:= $(call my-dir)
 include $(CLEAR_VARS)
 
-LOCAL_SRC_FILES:= atrace_monitor.c atrace_impl.c bugreport_impl.c common.c conn.c
+LOCAL_SRC_FILES:= atrace_monitor.c atrace_impl.c bugreport_impl.c common.c conn.c logcat_impl.c
 
 LOCAL_MODULE:= atrace_monitor
 

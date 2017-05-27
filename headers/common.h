@@ -55,4 +55,16 @@ void set_blockflag (int flag);
 int get_blockflag();
 void dump_systrace();
 int do_bugreport ();
+
+#define	SAFE_SPRINTF(b,l,f,...)\
+{\
+	void *__pb = b;\
+	if (__pb && (l > 0))\
+	{\
+		snprintf (b, l, f, __VA_ARGS__);\
+		b [l - 1] = 0;\
+	}\
+}
+
+#define PATH_MAX 256
 #endif

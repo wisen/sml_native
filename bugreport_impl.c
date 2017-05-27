@@ -19,6 +19,7 @@
 
 time_t bugreport_start_time;
 static int is_bugreporting = 0;
+//char buffer [PATH_MAX];
 
 void set_bugreport(int flag)
 {
@@ -74,5 +75,10 @@ int do_bugreport ()
 	set_bugreport(1);
 	sleep(3);
 	property_set("debug.atrace_monitor.flag", "stop_dumpstate");
+	/*
+	snprintf (buffer, sizeof (buffer), "/system/bin/start dpstat", " -d -p -B -o /sdcard/trlog/bugreport");
+	buffer [sizeof (buffer) - 1] = 0;
+	system(buffer);
+	*/
 	return 0;
 }
