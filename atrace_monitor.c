@@ -401,8 +401,8 @@ int main()
 					set_blockflag(2);
 					dump_systrace();
 					set_blockflag(2);
-					do_bugreport ();
 					dump_logbuffer();
+					do_bugreport ();
 					//set_blockflag(0);
 				}
 				trigger = -1; 
