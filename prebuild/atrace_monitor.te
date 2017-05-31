@@ -33,3 +33,5 @@ allow atrace_monitor socket_device:sock_file { create unlink };
 allow atrace_monitor logdr_socket:sock_file { write };
 allow atrace_monitor logd_socket:sock_file { write };
 allow atrace_monitor logcat_exec:file { execute read open execute_no_trans getattr };
+allow atrace_monitor toolbox_exec:file { read open execute execute_no_trans getattr };
+allow atrace_monitor kernel:system { syslog_read };

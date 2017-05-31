@@ -102,6 +102,13 @@ int dump_logbuffer()
 	execv (argv [0], argv);
 	DM ("execv: %s\n", strerror (errno));
 	*/
+	snprintf (output_filename_main, sizeof (output_filename_main), "%s/%s/kernel_%04d%02d%02d_%02d%02d%02d.txt",
+		STORAGE, FOLDER_SYS, ptm->tm_year + 1900, ptm->tm_mon + 1, ptm->tm_mday, ptm->tm_hour, ptm->tm_min, ptm->tm_sec);
+	output_filename_main [sizeof (output_filename_main) - 1] = 0;
+	SAFE_SPRINTF (buffer, sizeof (buffer), "/system/bin/dmesg > %s", output_filename_main)
+	DM ("%s\n", buffer);
+	system (buffer);
+
 	snprintf (output_filename_main, sizeof (output_filename_main), "%s/%s/main_%04d%02d%02d_%02d%02d%02d.txt",
 		STORAGE, FOLDER_SYS, ptm->tm_year + 1900, ptm->tm_mon + 1, ptm->tm_mday, ptm->tm_hour, ptm->tm_min, ptm->tm_sec);
 	output_filename_main [sizeof (output_filename_main) - 1] = 0;
