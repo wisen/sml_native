@@ -4,7 +4,6 @@ service atrace_monitor /system/bin/atrace_monitor
     group root system
     socket atrace_monitor_cmd_sk seqpacket 0660 system system
     socket atrace_monitor_rsp_sk seqpacket 0660 system system
-    disabled
 service dpstate /system/bin/dumpstate -d -p -B -o /sdcard/trlog/bugreport
     class main
     disabled
