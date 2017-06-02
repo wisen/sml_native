@@ -29,26 +29,15 @@ static int ctrl_dfd_reopened; /* did we reopen ctrl conn on this loop? */
 static int rsp_lfd;
 static int rsp_dfd = -1;
 static int rsp_dfd_reopened;
+/* write socket listen and data*/
+static int wr_lfd;
+static int wr_dfd = -1;
+static int wr_sk_enabled = 0;
 
 #define ATRACE_MONITOR_CMD_SK_NAME "atrace_monitor_cmd_sk"
 #define ATRACE_MONITOR_RSP_SK_NAME "atrace_monitor_rsp_sk"
+#define ATRACE_MONITOR_WR_SK_NAME "atrace_monitor_wr_sk"
 #define CTRL_PACKET_MAX (sizeof(int) * (2))
-
-enum atm_cmd {
-    ATM_START_SYSTRACE,
-    ATM_START_BGREPORT,
-    ATM_START_LOGCAT,
-    ATM_START_ALL,
-    ATM_MAX_CMD,
-};
-
-enum atm_rsp {
-    ATM_FINISH_SYSTRACE,
-    ATM_FINISH_BGREPORT,
-    ATM_FINISH_LOGCAT,
-    ATM_FINISH_ALL,
-    ATM_MAX_RSP,
-};
 
 static int ctrl_data_read(char *buf, size_t bufsz) {
     int ret = 0;
@@ -149,6 +138,14 @@ static void ctrl_command_handler(void) {
 	 dump_logbuffer();
 	 set_blockflag(1);
 	 do_bugreport();
+        break;
+    case ATM_REINIT_LOGCAT:
+	 DM("reinit logcat");
+	 init_logcat();
+        break;
+    case ATM_ENABLE_WRSK:
+	 DM("enable write socket");
+	 if (!init_write_socket()) wr_sk_enabled = 1;
         break;
     default:
         DM("Received unknown command code %d", cmd);
@@ -301,6 +298,71 @@ static void rsp_connect_handler(uint32_t events __unused) {
         rsp_data_close();
         return;
     }
+}
+
+int is_wrsk_enabled() {
+	return wr_sk_enabled;
+}
+
+int write_data_toJ(enum atm_cmd cmd) {
+    int ret = 0;
+    int len = 0;
+    int wr_cmd[4];
+    wr_cmd[0] = cmd;
+    wr_cmd[1] = 0;
+    wr_cmd[2] = 0;
+    wr_cmd[3] = 0;
+    do {
+        len = write(wr_lfd, wr_cmd, sizeof(wr_cmd));
+    } while (len < 0 && errno == EINTR);
+
+    if(len != sizeof(wr_cmd)) {
+        DM("write_data_toJ len=%d errno=%d", len, errno);
+        return -1;
+    }
+
+    DM("write_data_toJ %d sucess", wr_cmd[0]);
+
+    return 0;
+}
+
+int init_write_socket()
+{
+    struct sockaddr_storage ss;
+    struct sockaddr *addrp = (struct sockaddr *)&ss;
+    socklen_t alen;
+    int ret = 0;
+	
+    //wr_lfd = android_get_control_socket(ATRACE_MONITOR_WR_SK_NAME);
+    wr_lfd = socket_local_client(ATRACE_MONITOR_WR_SK_NAME,
+                  ANDROID_SOCKET_NAMESPACE_ABSTRACT, SOCK_STREAM);
+    if (wr_lfd < 0) {
+        DM("create atrace_monitor_wr_sk cmd socket failed:%d", errno);
+        return -1;
+    }
+
+    //ret = listen(wr_lfd, 1);
+    //if (ret < 0) {
+    //    DM("atrace_monitor_wr_sk cmd socket listen failed (errno=%d)", errno);
+    //    return -1;
+    //}
+    //DM("listen to atrace_monitor_wr_sk[%d]", wr_lfd);
+
+    //if (wr_lfd >= 0) {
+    //    ctrl_data_close();
+     //   ctrl_dfd_reopened = 1;
+    //}
+
+    //alen = sizeof(ss);
+    //wr_dfd = accept(wr_lfd, addrp, &alen);
+
+   // if (wr_dfd < 0) {
+   //    DM("sml write socket accept failed; errno=%d", errno);
+    //    return -1;
+    //}
+
+    DM("SML write socket connected");
+    return 0;
 }
 
 int init(void) {

@@ -398,12 +398,15 @@ int main()
 			case 4: 
 				if (ie.code == KEY_VOLUMEDOWN)
 				{
+					if(is_wrsk_enabled()) {
+						write_data_toJ(ATM_START_ALL);
+					}
 					set_blockflag(2);
 					dump_systrace();
 					set_blockflag(2);
 					dump_logbuffer();
+					set_blockflag(2);
 					do_bugreport ();
-					//set_blockflag(0);
 				}
 				trigger = -1; 
 				break;

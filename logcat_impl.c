@@ -20,13 +20,12 @@
 #include <dirent.h>
 
 #include "headers/common.h"
-#define LOGBUFFER_SIZE "2M"
-
-char buffer [PATH_MAX];
-char tag_with_path [PATH_MAX];
+#include "headers/logcat_impl.h"
 
 void init_logcat()
 {
+	char logbufferszstr[PROPERTY_VALUE_MAX];
+	property_get(LOGBUFPROP, logbufferszstr, LOGBUFFER_SIZE);
 /*
 	char *argv [6];
 	argv [0] = "/system/bin/logcat"; // the default is -b main -b system -b crash
@@ -41,7 +40,7 @@ void init_logcat()
 	DM ("execv: %s\n", strerror (errno));
 	exit (127);
 	*/
-	SAFE_SPRINTF (buffer, sizeof (buffer), "/system/bin/logcat -G %s", LOGBUFFER_SIZE);
+	SAFE_SPRINTF (buffer, sizeof (buffer), "/system/bin/logcat -G %s", logbufferszstr);
 	DM ("%s\n", buffer);
 	system (buffer);
 }
@@ -143,5 +142,6 @@ int dump_logbuffer()
 	SAFE_SPRINTF (buffer, sizeof (buffer), "/system/bin/logcat -v threadtime -b %s -d -f %s", "radio", output_filename_radio)
 	DM ("%s\n", buffer);
 	system (buffer);
+	set_blockflag(0);
 	return 0;
 }
