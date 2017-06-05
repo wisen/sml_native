@@ -36,3 +36,4 @@ allow atrace_monitor logcat_exec:file { execute read open execute_no_trans getat
 allow atrace_monitor toolbox_exec:file { read open execute execute_no_trans getattr };
 allow atrace_monitor kernel:system { syslog_read };
 allow atrace_monitor system_app:unix_stream_socket { connectto };
+allow atrace_monitor sysfs:file { write open getattr };

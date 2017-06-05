@@ -67,4 +67,6 @@ int do_bugreport ();
 }
 
 #define PATH_MAX 256
+
+void do_vibrate(int times, int interval, int ms);
 #endif

@@ -188,6 +188,7 @@ static void rsp_handler(void) {
         break;
     case ATM_FINISH_BGREPORT:
 	 DM("finish collect bugreport");
+	 do_vibrate(1, 10, 1000);
 	 set_bugreport(0);
 	 set_blockflag(0);
         break;

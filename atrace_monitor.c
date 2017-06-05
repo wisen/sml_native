@@ -18,6 +18,7 @@
 #include "headers/atrace_impl.h"
 #include "headers/bugreport_impl.h"
 #include "headers/logcat_impl.h"
+#include "headers/vibrator_impl.h"
 
 #define APP_DIR  "/system/"
 #define BIN_DIR  APP_DIR "bin/"
@@ -364,6 +365,8 @@ int main()
 					is_combine_key = 0;
 				} else {
 					//stop dumpstate service, restore the block flag
+					DM("bugreport timeout(may be UI don't announce it.)");
+					do_vibrate(1, 10, 1000);
 					set_blockflag(0);
 				}
 			}
@@ -401,6 +404,7 @@ int main()
 					if(is_wrsk_enabled()) {
 						write_data_toJ(ATM_START_ALL);
 					}
+					do_vibrate(3, 300 * 1000, 200);
 					set_blockflag(2);
 					dump_systrace();
 					set_blockflag(2);
