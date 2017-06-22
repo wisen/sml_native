@@ -303,7 +303,7 @@ int main()
 	struct input_event ie;
 	int timeout_ms = -1;
 	int *fds;
-	int nr, trigger = -1;
+	int nr, trigger, trigger_close = -1;
 	time_t combkey_last, combkey_now, combkey_interval, bugreport_duration;
 	combkey_last = combkey_now = combkey_interval = 0;
 
@@ -325,6 +325,7 @@ int main()
 			DM ("timeout clear triggers\n");
 			timeout_ms = -1;
 			trigger = -1;
+			trigger_close = -1;
 			continue;
 		}
 
@@ -378,7 +379,7 @@ int main()
 			{
 				combkey_now = time(NULL);
 
-				if ( trigger == -1) combkey_interval = 0;
+				if (trigger == -1 && trigger_close == -1) combkey_interval = 0;
 				else combkey_interval = combkey_now - combkey_last;
 
 				DM("now: %d, last: %d, interval: %d\n", combkey_now, combkey_last, combkey_interval);
@@ -386,12 +387,18 @@ int main()
 
 			if (is_combine_key)
 			{
-				if (combkey_interval <= KEY_TIMEOUT) trigger ++;
-				else trigger = -1;
+				if (combkey_interval <= KEY_TIMEOUT)
+				{
+					trigger++;
+					trigger_close++;
+				}else {
+					trigger = -1;
+					trigger_close = -1;
+				}
 			}
-			DM ("==> trigger [%d]\n", trigger);
+			DM ("==> trigger [%d][%d]\n", trigger, trigger_close);
 
-			/* up down up down up up down down down */
+			/* up down up down down */
 			switch (trigger)
 			{
 			case 0: if (ie.code != KEY_VOLUMEUP)	trigger = -1; break;
@@ -416,6 +423,31 @@ int main()
 				break;
 			default: trigger = -1;
 			}
+
+			/*down up down up up */
+			switch (trigger_close)
+			{
+			case 0: if (ie.code != KEY_VOLUMEDOWN)	trigger_close = -1; break;
+			case 1: if (ie.code != KEY_VOLUMEUP)	trigger_close = -1; break;
+			case 2: if (ie.code != KEY_VOLUMEDOWN)	trigger_close = -1; break;
+			case 3: if (ie.code != KEY_VOLUMEUP)	trigger_close = -1; break;
+			case 4: 
+				if (ie.code == KEY_VOLUMEUP)
+				{
+					if(1==get_atrace_status())
+					{
+						clean_systrace();
+						do_vibrate(2, 300 * 1000, 200);
+					} else {
+						init_atrace();
+						do_vibrate(1, 10, 1000);
+					}
+				}
+				trigger_close = -1; 
+				break;
+			default: trigger_close = -1;
+			}
+			
 			if (is_combine_key)
 			{
 				combkey_last = combkey_now;

@@ -48,6 +48,8 @@ static const char *TRRACE_ENABLE = "1";
 const size_t FD_BUFFER_SIZE = 2 * 1024 * 1024; //buffer is 2048KB
 const size_t FD_BUFFER_TMP_SIZE = 2 * 1024 * 1024 * 1.1; //buffer is 1024KB with extra 10% buffer
 
+static int atrace_status = 0;//0:off 1:on
+
 static char *debug_dump (const char *data, int len, char *ret, int buflen)
 {
 	const char *rec = "%02X(%c),";
@@ -219,7 +221,7 @@ int systrace_clean ()
 int systrace_init ()
 {
 	char buf[PROPERTY_VALUE_MAX];
-    snprintf(buf, sizeof(buf), "%#" PRIx64, (uint64_t)DEFAULT_TRACE_TAG);
+	snprintf(buf, sizeof(buf), "%#" PRIx64, (uint64_t)DEFAULT_TRACE_TAG);
 
 	if (property_set(k_traceTagsProperty, buf) < 0) {
 		fprintf(stderr, "error setting trace tags system property\n");
@@ -248,6 +250,16 @@ int systrace_on ()
 int systrace_off ()
 {
 	return write_attr_file (attr_tracing_on, "0", strlen ("0"));
+}
+
+void set_atrace_status(int status)
+{
+	atrace_status = status;
+}
+
+int get_atrace_status()
+{
+	return atrace_status;
 }
 
 int systrace_dump ()
@@ -519,14 +531,32 @@ void init_atrace()
 	if (DEBUG) DM("%s\n", __FUNCTION__);
 	systrace_init();
 	systrace_on();
+	set_atrace_status(1);
 }
 
 void dump_systrace()
 {
 	if (DEBUG) DM("%s\n", __FUNCTION__);
-	systrace_off ();
+	systrace_off();
 	systrace_dump();
-	systrace_clean ();
+	systrace_clean();
 	systrace_on();
 	set_blockflag(0);
+}
+
+void clean_systrace()
+{
+	if (DEBUG) DM("%s\n", __FUNCTION__);
+	systrace_off();
+	{
+		char buf[PROPERTY_VALUE_MAX];
+		snprintf(buf, sizeof(buf), "%#" PRIx64, (uint64_t)DEFAULT_TRACE_TAG);
+
+		if (property_set(k_traceTagsProperty, buf) < 0) {
+			fprintf(stderr, "error setting trace tags system property\n");
+			return false;
+		}
+	}
+	systrace_clean();
+	set_atrace_status(0);
 }
