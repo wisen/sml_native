@@ -147,6 +147,17 @@ static void ctrl_command_handler(void) {
 	 DM("enable write socket");
 	 if (!init_write_socket()) wr_sk_enabled = 1;
         break;
+    case ATM_SWITCH_ATRACE:
+	 DM("enable write socket");
+	 if(1==get_atrace_status())
+	{
+		clean_systrace();
+		do_vibrate(2, 300 * 1000, 200);
+	} else {
+		init_atrace();
+		do_vibrate(1, 10, 1000);
+	}
+	 break;
     default:
         DM("Received unknown command code %d", cmd);
         return;

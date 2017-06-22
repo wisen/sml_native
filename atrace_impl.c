@@ -554,7 +554,7 @@ void clean_systrace()
 
 		if (property_set(k_traceTagsProperty, buf) < 0) {
 			fprintf(stderr, "error setting trace tags system property\n");
-			return false;
+			return;
 		}
 	}
 	systrace_clean();
