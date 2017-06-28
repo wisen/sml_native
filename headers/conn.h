@@ -24,4 +24,5 @@ void mainloop(void);
 int init(void);
 int is_wrsk_enabled();
 int write_data_toJ(enum atm_cmd cmd);
+int init_write_socket();
 #endif

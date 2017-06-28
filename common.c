@@ -1,5 +1,11 @@
 #include <sys/stat.h>
 #include <errno.h>
+#include <stdio.h>
+#include <string.h>
+#include <fcntl.h>
+#include <ctype.h>
+#include <unistd.h>
+#include <stdlib.h>
 
 #include "headers/common.h"
 

@@ -9,5 +9,6 @@ int systrace_dump ();
 void init_atrace();
 void dump_systrace();
 int get_atrace_status();
+void clean_systrace();
 
 #endif

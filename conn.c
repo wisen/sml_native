@@ -10,11 +10,13 @@
 #include <sys/socket.h>
 #include <sys/types.h>
 #include <unistd.h>
+#include <arpa/inet.h>
 
 #include <cutils/sockets.h>
 #include "headers/common.h"
 #include "headers/conn.h"
 #include "headers/bugreport_impl.h"
+#include "headers/logcat_impl.h"
 
 /* ctrl and rsp listen socket, ctrl and rsp data socket, 2 tbd */
 #define MAX_EPOLL_EVENTS 6

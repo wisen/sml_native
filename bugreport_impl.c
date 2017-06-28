@@ -12,6 +12,7 @@
 #include <sys/types.h>
 #include <sys/prctl.h>
 #include <linux/input.h>
+#include <cutils/properties.h>
 
 #include "headers/common.h"
 #define	BUGREPORT	"/system/bin/bugreport"
