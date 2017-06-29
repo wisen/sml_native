@@ -19,6 +19,9 @@
 #include "headers/bugreport_impl.h"
 #include "headers/logcat_impl.h"
 #include "headers/vibrator_impl.h"
+#include "version.d"
+
+#define ATM_VERSION "1.01-"ATM_VERSION_POSTFIX
 
 #define APP_DIR  "/system/"
 #define BIN_DIR  APP_DIR "bin/"
@@ -275,6 +278,8 @@ void *thr_connJ(void *arg){
 
 int main()
 {
+	DM("Version: %s\n", ATM_VERSION);
+
 	init_atrace();
 	init_logcat();
 

@@ -550,7 +550,7 @@ void clean_systrace()
 	systrace_off();
 	{
 		char buf[PROPERTY_VALUE_MAX];
-		snprintf(buf, sizeof(buf), "%#" PRIx64, (uint64_t)DEFAULT_TRACE_TAG);
+		snprintf(buf, sizeof(buf), "%#" PRIx64, (uint64_t)0);
 
 		if (property_set(k_traceTagsProperty, buf) < 0) {
 			fprintf(stderr, "error setting trace tags system property\n");

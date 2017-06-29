@@ -17,6 +17,7 @@
 #include "headers/conn.h"
 #include "headers/bugreport_impl.h"
 #include "headers/logcat_impl.h"
+#include "headers/atrace_impl.h"
 
 /* ctrl and rsp listen socket, ctrl and rsp data socket, 2 tbd */
 #define MAX_EPOLL_EVENTS 6
