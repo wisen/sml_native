@@ -110,7 +110,7 @@ static void ctrl_command_handler(void) {
         action_now = time(NULL);
         bugreport_duration = get_bugreport_duration(action_now);
         DM("block from %s, bugreport_duration=%d", get_blockflag()==1?"UI":"self", bugreport_duration);
-        if(bugreport_duration < BUGREPORT_TIMEOUT){
+        if(bugreport_duration < get_bugreport_timeout()){
             return;
         } else {
             //stop dumpstate service TODO
@@ -161,6 +161,10 @@ static void ctrl_command_handler(void) {
 		do_vibrate(1, 10, 1000);
 	}
 	 break;
+    case ATM_SET_TIMEOUT:
+	 DM("set timeout");
+	 set_bugreport_timeout(ibuf[1]);
+        break;
     default:
         DM("Received unknown command code %d", cmd);
         return;

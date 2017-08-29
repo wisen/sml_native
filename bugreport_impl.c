@@ -21,6 +21,17 @@
 time_t bugreport_start_time;
 static int is_bugreporting = 0;
 //char buffer [PATH_MAX];
+static int bugreport_timeout = 300;
+
+void set_bugreport_timeout(int timeout)
+{
+	bugreport_timeout = timeout;
+}
+
+int get_bugreport_timeout()
+{
+	return bugreport_timeout;
+}
 
 void set_bugreport(int flag)
 {

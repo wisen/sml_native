@@ -9,6 +9,7 @@ enum atm_cmd {
     ATM_REINIT_LOGCAT,
     ATM_ENABLE_WRSK,
     ATM_SWITCH_ATRACE,
+    ATM_SET_TIMEOUT,
     ATM_MAX_CMD,
 };
 
