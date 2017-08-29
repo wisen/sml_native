@@ -416,6 +416,7 @@ int main()
 					if(is_wrsk_enabled()) {
 						write_data_toJ(ATM_START_ALL);
 					}
+					set_bugreport_timeout(300);
 					do_vibrate(3, 300 * 1000, 200);
 					set_blockflag(2);
 					dump_systrace();

@@ -136,6 +136,7 @@ static void ctrl_command_handler(void) {
         break;
     case ATM_START_ALL:
 	 DM("start collect all");
+	 set_bugreport_timeout(300);
 	 set_blockflag(1);
 	 dump_systrace();
 	 dump_logbuffer();
