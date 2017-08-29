@@ -109,7 +109,7 @@ static void ctrl_command_handler(void) {
     {
         action_now = time(NULL);
         bugreport_duration = get_bugreport_duration(action_now);
-        DM("block from %s, bugreport_duration=%d", get_blockflag()==1?"UI":"self", bugreport_duration);
+        DM("block from %s, bugreport_duration=%d", get_blockflag()==1?"UI":"ATM", bugreport_duration);
         if(bugreport_duration < get_bugreport_timeout()){
             return;
         } else {
@@ -122,6 +122,7 @@ static void ctrl_command_handler(void) {
     case ATM_START_SYSTRACE:
         DM("Start collect systrace");
         set_blockflag(1);
+	 set_starttime(time(NULL));
         dump_systrace();
         break;
     case ATM_START_LOGCAT:

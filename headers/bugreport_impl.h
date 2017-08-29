@@ -9,6 +9,6 @@ void set_bugreport(int flag);
 time_t get_bugreport_duration(time_t now);
 void set_bugreport_timeout(int timeout);
 int get_bugreport_timeout();
-
+void set_starttime(time_t time);
 
 #endif

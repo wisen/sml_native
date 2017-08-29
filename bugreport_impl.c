@@ -39,6 +39,11 @@ void set_bugreport(int flag)
 	is_bugreporting = flag;
 }
 
+void set_starttime(time_t time)
+{
+	bugreport_start_time = time;
+}
+
 time_t get_bugreport_duration(time_t now)
 {
 	if(is_bugreporting)
@@ -83,7 +88,8 @@ int do_bugreport ()
 	return ret;
 	*/
 	//property_set("ctl.start", "dpstate");
-	bugreport_start_time = time(NULL);
+	//bugreport_start_time = time(NULL);
+	set_starttime(time(NULL));
 	property_set("debug.atrace_monitor.flag", "start_dumpstate");
 	set_bugreport(1);
 	sleep(3);
