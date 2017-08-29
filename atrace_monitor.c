@@ -366,7 +366,7 @@ int main()
 				//break;
 				combkey_now = time(NULL);
 				bugreport_duration = get_bugreport_duration(combkey_now);
-				DM("block from %s, bugreport_duration=%d", get_blockflag()==1?"UI":"self", bugreport_duration);
+				DM("block from %s, bugreport_duration=%d", get_blockflag()==1?"UI":"ATM", bugreport_duration);
 				if(bugreport_duration < get_bugreport_timeout()){
 					is_combine_key = 0;
 				} else {

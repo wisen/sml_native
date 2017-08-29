@@ -26,6 +26,7 @@ static int bugreport_timeout = 300;
 void set_bugreport_timeout(int timeout)
 {
 	bugreport_timeout = timeout;
+	DM ("set_bugreport_timeout: %d\n", bugreport_timeout);
 }
 
 int get_bugreport_timeout()
