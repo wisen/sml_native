@@ -2,6 +2,7 @@
 #define __ATRACE_CONN_H_
 
 enum atm_cmd {
+    ATM_ENABLE_ATRACE,
     ATM_START_SYSTRACE,
     ATM_START_BGREPORT,
     ATM_START_LOGCAT,
